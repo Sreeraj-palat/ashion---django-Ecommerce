@@ -71,7 +71,13 @@
                         {% if single_product.stock <= 0 %}
                             <h5>Out of Stock</h5>
                         {% else %}
+
+                        {% if in_cart %}
+                        <a href="" class="cart-btn-sucess"><span class="icon_bag_alt"></span> Added to cart</a>
+                            
+                        {% else %}   
                          <a href="{% url 'add_cart' single_product.id %}" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                        {% endif %}
                         {% endif %}
                         
                        

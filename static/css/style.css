@@ -1797,6 +1797,19 @@ ol {
 	margin-right: 10px;
 	margin-bottom: 10px;
 }
+.product__details__button .cart-btn-sucess {
+	display: inline-block;
+	font-size: 14px;
+	color: #ffffff;
+	background: #3ec054;
+	font-weight: 600;
+	text-transform: uppercase;
+	padding: 14px 30px 15px;
+	border-radius: 50px;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
 
 .product__details__button ul {
 	float: left;
