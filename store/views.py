@@ -23,7 +23,7 @@ def store(request, category_slug=None):
 
     else:
         products = Product.objects.filter(is_available=True)
-        paginator = Paginator(products, 6)
+        paginator = Paginator(products, 9)
         page = request.GET.get('page')
         pageed_products = paginator.get_page(page)
 
@@ -61,6 +61,7 @@ def search(request):
                 Q(description__icontains=keyword) |
                 Q(product_name__icontains=keyword)
             )
+        print(keyword)    
 
         context = {
             'products' : products,

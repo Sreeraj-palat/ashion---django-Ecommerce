@@ -49,6 +49,9 @@
                 </div>
             </div>
             <div class="col-lg-6">
+
+                <form action="{% url 'add_cart' single_product.id %}" method="POST">
+                    {% csrf_token %}
                 <div class="product__details__text">
                     <h3>{{single_product.product_name}} <span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
                     <div class="rating">
@@ -72,12 +75,9 @@
                         <a href="" class="cart-btn"><span class=""></span>Out of stock</a>
                         {% else %}
 
-                        {% if in_cart %}
-                        <a href="" class="cart-btn-sucess"><span class="icon_bag_alt"></span> Added to cart</a>
-                            
-                        {% else %}   
-                         <a href="{% url 'add_cart' single_product.id %}" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
-                        {% endif %}
+                        
+                         <button type="submit" href="" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</button>
+                        
                         {% endif %}
                         
                        
@@ -101,39 +101,25 @@
                             <li>
                                 <span>Available color:</span>
                                 <div class="color__checkbox">
-                                    <label for="red">
-                                        <input type="radio" name="color__radio" id="red" checked>
+                                    {% for i in single_product.variation_set.colors %}
+                                    <label for="{{i.variation_value}}">
+                                        <input type="radio" name="color" value="{{i.variation_value}}" id="{{i.variation_value}}">
                                         <span class="checkmark"></span>
                                     </label>
-                                    <label for="black">
-                                        <input type="radio" name="color__radio" id="black">
-                                        <span class="checkmark black-bg"></span>
-                                    </label>
-                                    <label for="grey">
-                                        <input type="radio" name="color__radio" id="grey">
-                                        <span class="checkmark grey-bg"></span>
-                                    </label>
+                                    {% endfor %}
+                                    
                                 </div>
                             </li>
                             <li>
                                 <span>Available size:</span>
                                 <div class="size__btn">
-                                    <label for="xs-btn" class="active">
-                                        <input type="radio" id="xs-btn">
-                                        xs
+                                    {% for i in single_product.variation_set.sizes %}
+                                    <label for="{{i.variation_value}}-btn" class="">
+                                        <input type="radio" name="size" id="{{i.variation_value}}-btn" value="{{i.variation_value}}">
+                                        {{i.variation_value}}
                                     </label>
-                                    <label for="s-btn">
-                                        <input type="radio" id="s-btn">
-                                        s
-                                    </label>
-                                    <label for="m-btn">
-                                        <input type="radio" id="m-btn">
-                                        m
-                                    </label>
-                                    <label for="l-btn">
-                                        <input type="radio" id="l-btn">
-                                        l
-                                    </label>
+                                    {% endfor %}
+                                    
                                 </div>
                             </li>
                             <li>
@@ -143,6 +129,7 @@
                         </ul>
                     </div>
                 </div>
+            </form>
             </div>
             <div class="col-lg-12">
                 <div class="product__details__tab">

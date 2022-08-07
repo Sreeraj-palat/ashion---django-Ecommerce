@@ -59,7 +59,16 @@
                                     <img src="{{cart_items.product.images.url}}" alt="">
                                     <div class="cart__product__item__title">
                                        <a href="{{ cart_items.product.get_url }}"><h6>{{cart_items.product.product_name}}</h6></a> 
+                                       
+                                       {% if cart_items.variations.all %}
+                                       {% for item in cart_items.variations.all %}
+                                       {{item.variation_category | capfirst}} : {{item.variation_value | capfirst}} <br>
+                                        
+                                       {% endfor %}
+                                        
+                                       {% endif %}
                                         <div class="rating">
+                                            
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -75,7 +84,7 @@
                                     </div>
                                 </td>
                                 <td class="cart__total">$ {{cart_items.sub_total}}</td>
-                                <td class="cart__close"><a href="{% url 'remove_cart_item' cart_items.product.id %}"><span  class="icon_close"></span></a></td>
+                                <td class="cart__close"><a href="{% url 'remove_cart_item' cart_items.product.id cart_items.id %}" onclick ="return confirm('Are you sure you want to delete the item .?')"><span  class="icon_close"></span></a></td>
                                 
                                
                             </tr>
