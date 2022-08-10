@@ -89,10 +89,22 @@
       /></a>
     </div>
     <div id="mobile-menu-wrap"></div>
+
+    {% if user.id is None %}
     <div class="offcanvas__auth">
-      <a href="#">Login</a>
-      <a href="#">Register</a>
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
     </div>
+      
+    {% else %}
+
+    <div class="offcanvas__auth">
+      <a href="{% url 'logout' %}">Logout</a>
+      <a href="#">Dashboard</a>
+    </div>
+      
+    {% endif %}
+    
   </div>
   <!-- Offcanvas Menu End -->
 
@@ -130,10 +142,21 @@
         </div>
         <div class="col-lg-3">
           <div class="header__right">
+            {% if user.id is None %}
             <div class="header__right__auth">
-              <a href="#">Login</a>
-              <a href="#">Register</a>
+              <a href="{% url 'login' %}">Login</a>
+              <a href="{% url 'register' %}">Register</a>
             </div>
+              
+            {% else %}
+            <div class="header__right__auth">
+              <a href="{% url 'logout' %}">logout</a>
+              <a href="">Dashboard</a>
+              
+            </div>
+              
+            {% endif %}
+            
             <ul class="header__right__widget">
               <li><span class="icon_search search-switch"></span></li>
               <li>

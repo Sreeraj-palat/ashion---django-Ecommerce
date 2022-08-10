@@ -232,4 +232,8 @@ Created: Colorib
         $(this).addClass('active');
     });
 
+    setTimeout(function(){
+        $('message').fadeOut('slow')
+    },4000);
+
 })(jQuery);
