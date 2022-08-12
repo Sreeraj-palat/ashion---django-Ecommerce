@@ -39,3 +39,7 @@ class RegistrationForm(forms.ModelForm):
         
         for field in self.fields:
             self.fields[field].widget.attrs['class'] =  'checkout__form__input'  
+
+
+
+            
