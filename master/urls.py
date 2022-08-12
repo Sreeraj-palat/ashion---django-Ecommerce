@@ -15,4 +15,10 @@ urlpatterns = [
     path('add_category/',views.AddCategory, name='add_category'),
     path('edit_category/<int:id>/',views.EditCategory, name='edit_category'),
     path('delete_category/<int:id>/',views.DeleteCategory, name='delete_category'),  
+
+
+    path('variation_list/',views.VariationList,name='variation_list'),
+    path('add_variation/',views.AddVariation, name='add_variation'),
+    path('edit_vatiation/<int:id>/',views.EditVariation, name='edit_vatiation'),
+    path('delete_variation/<int:id>/',views.DeleteVariation, name='delete_variation'),  
 ]

@@ -1,6 +1,6 @@
 from pyexpat import model
 from django import forms
-from store.models import Product
+from store.models import Product, Variation
 from category.models import Category
 
 
@@ -31,5 +31,16 @@ class CategoryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CategoryForm,self).__init__(*args,**kwargs)        
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] =  'form-control'                 
-    
+            self.fields[field].widget.attrs['class'] =  'form-control' 
+
+
+class VariationForm(forms.ModelForm):
+    class Meta :
+        model = Variation
+        fields = ['product', 'variation_category', 'variation_value']
+
+
+    def __init__(self, *args, **kwargs):
+        super(VariationForm,self).__init__(*args,**kwargs)        
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] =  'form-control'    

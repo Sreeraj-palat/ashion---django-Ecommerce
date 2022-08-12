@@ -1,9 +1,9 @@
 from unicodedata import category
 from django.shortcuts import render, redirect
 from accounts.models import Account
-from store.models import Product
+from store.models import Product, Variation
 from django.contrib import messages
-from .forms import productForm, CategoryForm
+from .forms import productForm, CategoryForm, VariationForm
 from category.models import Category
 
 # Create your views here.
@@ -133,6 +133,61 @@ def DeleteCategory(request,id):
     category = Category.objects.filter(id=id)
     category.delete()
     return redirect('category_list')
+
+
+
+
+
+def VariationList(request):
+    variation = Variation.objects.all()
+    context = {
+        'variation' : variation,
+    }
+
+    return render(request,'master/variation_list.html', context)
+
+
+
+
+def AddVariation(request):
+    form = VariationForm()
+    if request.method == 'POST':
+        form = VariationForm(request.POST, request.FILES) 
+        if form.is_valid():
+            form.save()
+            return redirect('variation_list')
+        else:
+            messages.warning(request, 'enter correct details')
+
+    context = {
+        'form' : form,
+    }               
+
+    return render(request,'master/add_variation.html', context)  
+
+
+def EditVariation(request,id):
+    variation = Variation.objects.get(id=id)
+    form = VariationForm(instance=variation)
+    if request.method=='POST':
+        form = VariationForm(request.POST, request.FILES, instance=variation)
+        if form.is_valid():
+            form.save()
+            return redirect('variation_list')
+
+    context = {
+        'form' : form,
+        'variation' : variation,
+    }        
+    return render(request, 'master/edit_variation.html', context)      
+    
+
+
+def DeleteVariation(request,id):
+    variation = Variation.objects.filter(id=id)
+    variation.delete()
+    return redirect('variation_list')    
+
 
 
     
