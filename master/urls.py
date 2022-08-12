@@ -10,5 +10,9 @@ urlpatterns = [
     path('add_product/',views.AddProduct, name='add_product'),
     path('edit_product/<int:id>/',views.EditProduct, name='edit_product'), 
     path('delete_product/<int:id>/',views.DeleteProduct, name='delete_product'), 
-   
+
+    path('category_list/',views.CategoryList,name='category_list'),
+    path('add_category/',views.AddCategory, name='add_category'),
+    path('edit_category/<int:id>/',views.EditCategory, name='edit_category'),
+    path('delete_category/<int:id>/',views.DeleteCategory, name='delete_category'),  
 ]

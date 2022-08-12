@@ -1,5 +1,7 @@
+from pyexpat import model
 from django import forms
 from store.models import Product
+from category.models import Category
 
 
 
@@ -15,5 +17,19 @@ class productForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(productForm,self).__init__(*args,**kwargs)        
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] =  'form-control'  
+            self.fields[field].widget.attrs['class'] =  'form-control' 
+
+
+
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta :
+        model = Category
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(CategoryForm,self).__init__(*args,**kwargs)        
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] =  'form-control'                 
     
