@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm
+from .forms import RegistrationForm, VerifyForm
 from .models import Account
 from django.contrib import messages, auth
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from . import verify
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 # Create your views here.
@@ -27,9 +30,12 @@ def register(request):
                 password = password
             )
             user.phone_number = phone_number #not given the phone_number feild in models(create_user). thats why phone number is saved like this
+            request.session['phone_number'] = phone_number
+            print(phone_number)
             user.save()
+            verify.send(form.cleaned_data.get('phone_number'))
             messages.success(request,'Registration is successfull')
-            return redirect('register')            
+            return redirect('verify')            
             
     else:
         form = RegistrationForm()
@@ -68,3 +74,26 @@ def logout(request):
     auth.logout(request)
     messages.success(request, 'You are logged out.')
     return redirect('login')
+
+
+
+
+@csrf_exempt
+def verify_code(request):
+    if request.method == 'POST':
+        form = VerifyForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data.get('code')
+            phone = request.session['phone_number']
+            if verify.check(phone, code):
+                user = Account.objects.get(phone_number = phone)
+                user.is_active = True
+                user.save()
+                return redirect('login')
+    else:
+        form = VerifyForm()
+    return render(request, 'verify.html', {'form': form})
+
+
+
+
