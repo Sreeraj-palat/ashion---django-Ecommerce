@@ -80,7 +80,9 @@
                                 <td class="cart__price">$ {{cart_items.product.price}}</td>
                                 <td class="cart__quantity">
                                     <div class="pro-qty">
+                                        
                                         <input type="text" value="{{cart_items.quantity}}">
+                                        
                                     </div>
                                 </td>
                                 <td class="cart__total">$ {{cart_items.sub_total}}</td>
@@ -127,7 +129,7 @@
                         <li>Tax <span>${{tax}}</span></li>
                         <li>Grand Total <span>${{grand_total}}</span></li>
                     </ul>
-                    <a href="#" class="primary-btn">Proceed to checkout</a><br>
+                    <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a><br>
                     
                 </div>
             </div>
