@@ -7,9 +7,10 @@ from store.models import Product, Variation
 class Payment(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=100)
+    order_id = models.CharField(max_length=100 ,null=True)
     payment_method = models.CharField(max_length=100)
     amount_paid = models.CharField(max_length=100) # this is the total amount paid
-    status = models.CharField(max_length=100)
+    paid = models.BooleanField(default=False)   
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

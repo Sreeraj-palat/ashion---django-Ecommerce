@@ -97,7 +97,7 @@
                 {% for cart_items in cart_items %}
                 <li>
                   {{cart_items.product.product_name}}<span
-                    >$ {{cart_items.product.price}}</span
+                    >₹ {{cart_items.product.price}}</span
                   >
                 </li>
 
@@ -106,9 +106,9 @@
             </div>
             <div class="checkout__order__total">
               <ul>
-                <li>Subtotal <span>${{total}}</span></li>
-                <li>Tax <span>${{tax}}</span></li>
-                <li>Grand Total <span>${{grand_total}}</span></li>
+                <li>Subtotal <span>₹{{total}}</span></li>
+                <li>Tax <span>₹{{tax}}</span></li>
+                <li>Grand Total <span>₹{{grand_total}}</span></li>
               </ul>
             </div>
             <div class="checkout__order__widget">
