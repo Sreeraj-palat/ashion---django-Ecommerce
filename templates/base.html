@@ -100,7 +100,7 @@
 
     <div class="offcanvas__auth">
       <a href="{% url 'logout' %}">Logout</a>
-      <a href="#">Dashboard</a>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
     </div>
       
     {% endif %}
@@ -151,7 +151,7 @@
             {% else %}
             <div class="header__right__auth">
               <a href="{% url 'logout' %}">logout</a>
-              <a href="">Dashboard</a>
+              <a href="{% url 'dashboard' %}">Dashboard</a>
               
             </div>
               
