@@ -134,13 +134,24 @@ def payment_status(request):
                 pro_data.product_price = cart_item.product.price
                 pro_data.ordered = True 
                 pro_data.save()
+
+
+                #taking product variation
+                item = CartItem.objects.get(id=cart_item.id)
+                product_variation = item.variations.all()
+                pro_data = OrderProduct.objects.get(id=pro_data.id)
+                pro_data.variations.set(product_variation)
+                pro_data.save()
                 
-                pr = cart_item.product
-                product = Product.objects.get(id=pr.id)
+
+                # Reduce the quantity of the sold products
+                product = Product.objects.get(id=cart_item.product_id)
                 product.stock -= cart_item.quantity
                 product.save()
+
                 
-            cart_items.delete()
+            #Clear cart    
+            CartItem.objects.filter(user=request.user).delete()
           
            
             return render(request,'payment_status.html',{'status':True})
