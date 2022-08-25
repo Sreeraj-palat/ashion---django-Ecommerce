@@ -222,10 +222,10 @@ def update_order_status(request, pk):
         order_item.status = 'out_for_delivery'
     elif order_item.status == 'out_for_delivery':
         order_item.status = 'delivered'
-        if order_item.status == 'delivered':
-            if order_item.is_paid == False:
-                order_item.is_paid = True
-                order_item.save()
+        # if order_item.status == 'delivered':
+        #     if order_item.is_paid == False:
+        #         order_item.is_paid = True
+        #         order_item.save()
         
     order_item.save()
     return redirect(url)

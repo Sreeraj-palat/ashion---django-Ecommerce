@@ -66,9 +66,13 @@
                                     <td><a href="{% url 'update_order' order.id %}">approve as : Shipped</a></td>
                                     {% elif order.status == 'shipped' %}
                                     <td><a href="{% url 'update_order' order.id %}">approve as : Out for Delivery</a></td>
+                                    
                                     {% elif order.status == 'out_for_delivery' %}
-                                   
-                                    <td><a href="">Product Delivered</a></td>
+                                    <td><a href="{% url 'update_order' order.id %}">approve as : Delivered</a></td>
+                                    
+                                    {% elif order.status == 'delivered' %}
+                                    <td>Product Delivered</td>
+                                    
                                     {% endif %}
                                     <td>{{order.created_at}}</td>  
                                 </tr>
