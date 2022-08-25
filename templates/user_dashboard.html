@@ -74,30 +74,34 @@
                             {% if order.status == 'New' %}
                             <span style="float: right;">Order status: <strong
                                     class="text-primary">{{order.status}}</strong></span>
-                            {% elif order.status == 'Accepted' %}
+                            {% elif order.status == 'Ordered' %}
                             <span style="float: right;">Order status: <strong
                                     class="text-warning">{{order.status}}</strong></span>
-                            {% elif order.status == 'Completed' %}
+                            {% elif order.status == 'shipped' %}
                             <span style="float: right;">Order status: <strong
                                     class="text-success">{{order.status}}</strong></span>
-                            {% elif order.status == 'Cancelled' %}
+                            {% elif order.status == 'out_of_delivery' %}
                             <span style="float: right;">Order status: <strong
                                     class="text-danger">{{order.status}}</strong></span>
+                                    class="text-success">{{order.status}}</strong></span>
+                                    {% elif order.status == 'delivered' %}
+                                    <span style="float: right;">Order status: <strong
+                                            class="text-danger">{{order.status}}</strong></span>
                             {% endif %}
                         </header>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
                                     <h6 class="text-muted">Delivery to</h6>
-                                    <p>{{order.delivery_address.firstname}}&nbsp;{{order.delivery_address.lastname}}<br>
-                                        Phone: {{order.delivery_address.phonenumber}} Email:
-                                        {{order.delivery_address.email}} <br>
-                                        Location: {{order.delivery_address.addressfield_1}},
-                                        {{order.delivery_address.addressfield_2}},
-                                        {{order.delivery_address.city}},
-                                        {{order.delivery_address.state}},
-                                        {{order.delivery_address.country}},<br>
-                                        P.O. Box: {{order.delivery_address.post_code}}
+                                    <p>{{order.user.firstname}}&nbsp;{{order.user.lastname}}<br>
+                                        Phone: {{order.phone}} <br> Email:
+                                        {{order.email}} <br>
+                                        Location: {{order.address_line_1}},
+                                        {{order.address_line_2}}, <br>
+                                        {{order.city}},
+                                        {{order.state}},
+                                        {{order.country}},<br>
+                                        
                                     </p>
                                 </div>
                                 <div class="col-md-4">
