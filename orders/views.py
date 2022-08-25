@@ -118,7 +118,7 @@ def payment_status(request):
             print(order_number)
             order = Order.objects.get(user=request.user,is_ordered=False,order_number=order_number)
             order.is_ordered = True
-            order.status = 'Accepted'
+            order.status = 'Ordered'
             print(order.status)
             order.save()
             user = request.user

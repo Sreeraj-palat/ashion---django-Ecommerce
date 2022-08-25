@@ -21,4 +21,8 @@ urlpatterns = [
     path('add_variation/',views.AddVariation, name='add_variation'),
     path('edit_vatiation/<int:id>/',views.EditVariation, name='edit_vatiation'),
     path('delete_variation/<int:id>/',views.DeleteVariation, name='delete_variation'),  
+
+    path('orders/', views.orders,name='orders'),
+    path('order_details/<int:id>/', views.orderdetails, name='order_details'),
+    path('update_order/<int:pk>/', views.update_order_status, name='update_order')
 ]

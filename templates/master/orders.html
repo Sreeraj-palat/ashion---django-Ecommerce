@@ -1,0 +1,88 @@
+{% extends 'master/master_main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title"></h4>
+            </div>
+            
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <di class="d-md-flex">
+                    
+                    
+                    
+                        
+                    </div>
+            </div>
+        </div> 
+        <!-- /.col-lg-12
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h3 class="box-title">Orders</h3>
+                    
+                    <div class="table-responsive">
+                        <table class="table text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">Name</th>
+                                    <th class="border-top-0">Order Number</th>
+                                    <th class="border-top-0">Phone</th>
+                                    <th class="border-top-0">Status</th>
+                                    <th class="border-top-0">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for order in order %}
+                                
+                              
+                               
+                                <tr>
+                                    <td>{{order.user.first_name}}</td>
+                                    <td><a href="{% url 'order_details' order.order_number  %}">{{order.order_number}}</a></td>
+                                    <td>{{order.phone}}</td>
+                                    <td>{{order.status}}</td>
+                                    <td>{{order.created_at}}</td>
+                                    
+                                </tr>
+                                {% endfor %}
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+    
+{% endblock content %}

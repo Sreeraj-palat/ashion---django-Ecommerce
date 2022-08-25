@@ -1,0 +1,101 @@
+{% extends 'master/master_main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title"></h4>
+            </div>
+            
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <di class="d-md-flex">
+                    
+                    
+                    
+                        
+                    </div>
+            </div>
+        </div> 
+        <!-- /.col-lg-12
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h3 class="box-title">Orders</h3>
+                    
+                    <div class="table-responsive">
+                        <table class="table text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">Image</th>
+                                    <th class="border-top-0">Product</th>
+                                    <th class="border-top-0">Total</th>
+                                    <th class="border-top-0">Status</th>
+                                    <th class="border-top-0">Order Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              
+                                <h4>Item orderd by  {{order.user.first_name}}</h4>
+                                
+                              {% for item in orderproduct %}
+                                  
+                                <tr>
+                                    <td><img src="{{item.product.images.url}}" alt="" style="width: 80px;"></td>
+                                    <td>{{item.product}}</></td>
+                                    <td>{{item.product_price}}</td>
+                                    {% if order.status == 'Ordered' %}
+                                    <td><a href="{% url 'update_order' order.id %}">approve as : Shipped</a></td>
+                                    {% elif order.status == 'shipped' %}
+                                    <td><a href="{% url 'update_order' order.id %}">approve as : Out for Delivery</a></td>
+                                    {% elif order.status == 'out_for_delivery' %}
+                                   
+                                    <td><a href="">Product Delivered</a></td>
+                                    {% endif %}
+                                    <td>{{order.created_at}}</td>  
+                                </tr>
+                                <tr>
+                                    <td><h4>Delivery Address</h4></td>
+                                </tr>
+                                <tr><td>{{order.first_name}} {{order.last_name}}, <br> {{order.address_line_1}},{{order.address_line_2}},<br>{{order.city}}, {{order.state}}, {{order.country}} <br> Phone : {{order.phone}}</td></tr>
+
+                                {% endfor %}
+                              
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+    
+{% endblock content %}

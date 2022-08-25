@@ -6,144 +6,162 @@
 
 <body>
 
-   
-    
-        <!-- Breadcrumb Begin -->
-        <div class="breadcrumb-option">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb__links">
-                            <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
-                            <a href="">products</a>
-                            <span>Shopping cart</span>
-                        </div>
+
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                        <a href="">products</a>
+                        <span>Shopping cart</span>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Breadcrumb End -->
-        <br><br><br>
-    
-    
+    </div>
+    <!-- Breadcrumb End -->
+    <br><br><br>
+
+
     <!-- ========================= SECTION CONTENT ========================= -->
     <section class="section-conten padding-y bg ">
-       
-    <div class="container">
-        <div >
-        <aside class="col-md-3">
-            <!--   SIDEBAR   -->
-            <ul class="list-group">
-                <button class="list-group-item active mb-3 " style="text-align: center;"><strong><h3>User profile</h3></strong></button>
-                <form role="form" action="" method='POST'>
-                    {% csrf_token %}
-                    {% for form in form %}
-                    <div class="form-group mb-3">
-                      <div class="input-group input-group-alternative">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" style="width: 60px; font-size: small;">{{ form.label }}</span>
-                        </div>
-                        
-                        <input type="text" class="form-control" {{ form }}</i>
-                      </div>
-                    </div>
-                    {% endfor %}
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary my-4">save profile</button>
-                    </div>
-                  </form>
-                 
-            </ul>
-            <br>
-    
-            <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a> 
-            <!--   SIDEBAR .//END   -->
-        </aside>
-        {% if order %}
-        {% for order in order %}
-        <main class="col-md-9" style="float: right;">
-            <article class="card">
-            <header class="card-header">
-                <strong class="d-inline-block mr-3">Order ID: {{order.order_number}}</strong>
-                <span>Order Date: {{order.created_at}}</span>
-                {% if order.status == 'New' %}
-                <span style="float: right;">Order status: <strong class="text-primary">{{order.status}}</strong></span>
-                {% elif order.status == 'Accepted' %}
-                <span style="float: right;">Order status: <strong class="text-warning">{{order.status}}</strong></span>
-                {% elif order.status == 'Completed' %}
-                <span style="float: right;">Order status: <strong class="text-success">{{order.status}}</strong></span>
-                {% elif order.status == 'Cancelled' %}
-                <span style="float: right;">Order status: <strong class="text-danger">{{order.status}}</strong></span>
-                {% endif %}
-            </header>
-            <div class="card-body">
-                <div class="row"> 
-                    <div class="col-md-8">
-                        <h6 class="text-muted">Delivery to</h6>
-                        <p>{{order.delivery_address.firstname}}&nbsp;{{order.delivery_address.lastname}}<br>  
-                        Phone: {{order.delivery_address.phonenumber}} Email: {{order.delivery_address.email}} <br>
-                        Location: {{order.delivery_address.addressfield_1}},
-                        {{order.delivery_address.addressfield_2}},
-                        {{order.delivery_address.city}},
-                        {{order.delivery_address.state}},
-                        {{order.delivery_address.country}},<br> 
-                        P.O. Box: {{order.delivery_address.post_code}}
-                         </p>
-                    </div>
-                    <div class="col-md-4">
-                        <h6 class="text-muted">Payment</h6>
-                        <p>
-                        {% for payment in payment %}
-                        {% if payment.order_id == order.order_number %}
-                        <span >Payment: {{payment.payment_method}}</span><br>
-                        <span >Total: {{payment.amount_paid}} </span>
-                        {% endif %}
-                        {% endfor %}
-                        </p>
-                        {% comment %} {% if   order.status == 'New' or order.status == 'Accepted' %}
-                        <a href="{% url 'cancel_order' order.order_number %}" onclick="return confirm('Do you want to cancel this order')"><button class="btn btn-danger">Cancel order</button></a>
-                        {% endif %} {% endcomment %}
-                    </div>
-                </div> <!-- row.// -->
-            </div> <!-- card-body .// -->
-            <div class="table-responsive">
-            <table class="table table-hover">
-                {% for order_product in order_product %}
-                {% if order.id == order_product.order.id %}
-                <tr>
-                    <td width="65">
-                        <img src="{{order_product.product.thumbnail_image_1.url}}" class="img-xs border" style="width:80px" alt="">
-                    </td>
-                    <td> 
-                        <p class="title mb-0">{{order_product.product.product_name}} </p>
-                        <var class="price text-muted">₹ {{order_product.product_price}}/-</var>
-                    </td>
-                    <td >{% for item in order_product.variation.all %}
-                        <h6 style="display:inline; color:grey">{{item.variation_category | capfirst }}&nbsp;:</h6><h6 style="display:inline">&nbsp;{{item.variation_value| capfirst }}&nbsp;&nbsp;</h6>
-                        {% endfor %}</td>
-                </tr>
-                {% endif %}
+
+        <div class="container ">
+            <div class="row">
+                <div class="col-md-3 ">
+                    <!--   SIDEBAR   -->
+                    <ul class="list-group">
+                        <button class="list-group-item active mb-3 " style="text-align: center;"><strong>
+                                <h3>User profile</h3>
+                            </strong></button>
+                        <form role="form" action="" method='POST'>
+                            {% csrf_token %}
+                            {% for form in form %}
+                            <div class="form-group mb-3">
+                                <div class="input-group input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="width: 60px; font-size: small;">{{form.label }}</span>
+                                            
+                                    </div>
+
+                                    <input type="text" class="form-control" {{ form }}</i>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary my-4">save profile</button>
+                            </div>
+                        </form>
+
+                    </ul>
+                    <br>
+
+                    <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span
+                            class="text">Log out</span> </a>
+                    <!--   SIDEBAR .//END   -->
+                </div>
+
+                {% if order %}
+                {% for order in order %}
+                <div class="col-md-9" style="float: right;  ">
+                    <article class="card">
+                        <header class="card-header">
+                            <strong class="d-inline-block mr-3">Order ID: {{order.order_number}}</strong>
+                            <span>Order Date: {{order.created_at}}</span>
+                            {% if order.status == 'New' %}
+                            <span style="float: right;">Order status: <strong
+                                    class="text-primary">{{order.status}}</strong></span>
+                            {% elif order.status == 'Accepted' %}
+                            <span style="float: right;">Order status: <strong
+                                    class="text-warning">{{order.status}}</strong></span>
+                            {% elif order.status == 'Completed' %}
+                            <span style="float: right;">Order status: <strong
+                                    class="text-success">{{order.status}}</strong></span>
+                            {% elif order.status == 'Cancelled' %}
+                            <span style="float: right;">Order status: <strong
+                                    class="text-danger">{{order.status}}</strong></span>
+                            {% endif %}
+                        </header>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6 class="text-muted">Delivery to</h6>
+                                    <p>{{order.delivery_address.firstname}}&nbsp;{{order.delivery_address.lastname}}<br>
+                                        Phone: {{order.delivery_address.phonenumber}} Email:
+                                        {{order.delivery_address.email}} <br>
+                                        Location: {{order.delivery_address.addressfield_1}},
+                                        {{order.delivery_address.addressfield_2}},
+                                        {{order.delivery_address.city}},
+                                        {{order.delivery_address.state}},
+                                        {{order.delivery_address.country}},<br>
+                                        P.O. Box: {{order.delivery_address.post_code}}
+                                    </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="text-muted">Payment</h6>
+                                    <p>
+                                        {% for payment in payment %}
+                                        {% if payment.order_id == order.order_number %}
+                                        <span>Payment: {{payment.payment_method}}</span><br>
+                                        <span>Total: {{payment.amount_paid}} </span>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    {% comment %} {% if order.status == 'New' or order.status == 'Accepted' %}
+                                    <a href="{% url 'cancel_order' order.order_number %}"
+                                        onclick="return confirm('Do you want to cancel this order')"><button
+                                            class="btn btn-danger">Cancel order</button></a>
+                                    {% endif %} {% endcomment %}
+                                </div>
+                            </div> <!-- row.// -->
+                        </div> <!-- card-body .// -->
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                {% for order_product in order_product %}
+                                {% if order.id == order_product.order.id %}
+                                <tr>
+                                    <td width="65">
+                                        <img src="{{order_product.product.images.url }}" class="img-xs border"
+                                            style="width:80px" alt="">
+                                    </td>
+                                    <td>
+                                        <p class="title mb-0">{{order_product.product.product_name}} </p>
+                                        <var class="price text-muted">₹ {{order_product.product_price}}/-</var>
+                                    </td>
+                                    <td>{% for item in order_product.variation.all %}
+                                        <h6 style="display:inline; color:grey">{{item.variation_category | capfirst
+                                            }}&nbsp;:</h6>
+                                        <h6 style="display:inline">&nbsp;{{item.variation_value| capfirst }}&nbsp;&nbsp;
+                                        </h6>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </table>
+                        </div> <!-- table-responsive .end// -->
+                    </article> <!-- order-group.// -->
+                </div>
                 {% endfor %}
-            </table>
-            </div> <!-- table-responsive .end// -->
-            </article> <!-- order-group.// --> 
-        </main>
-        {% endfor %}
-        {% else %}
-        <div class="text-center">
-            <h1> omg...!!! </h1><h2> It's so empty here </h2><br>
-            <div class="cart__btn">
-                <a href="">Continue Shopping</a>
-            </div>
+                {% else %}
+                <div class="text-center">
+                    <h1> omg...!!! </h1>
+                    <h2> It's so empty here </h2><br>
+                    <div class="cart__btn">
+                        <a href="">Continue Shopping</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div> <!-- row.// -->
         </div>
-        {% endif %}
-    </div> <!-- row.// -->
-    </div>
-    
-    
+
+
     </section>
     <!-- ========================= SECTION CONTENT END// ========================= -->
-    
-     
-    
-{% endblock content %}
+
+
+
+    {% endblock content %}

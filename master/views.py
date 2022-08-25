@@ -1,3 +1,4 @@
+import imp
 from unicodedata import category
 from django.shortcuts import render, redirect
 from accounts.models import Account
@@ -5,7 +6,7 @@ from store.models import Product, Variation
 from django.contrib import messages
 from .forms import productForm, CategoryForm, VariationForm
 from category.models import Category
-
+from orders.models import Order,OrderProduct,Payment
 # Create your views here.
 
 def dashboard(request):
@@ -188,6 +189,46 @@ def DeleteVariation(request,id):
     variation.delete()
     return redirect('variation_list')    
 
+
+def orders(request):
+    order = Order.objects.all()
+    context = {
+        'order' : order
+    }
+    return render(request,'master/orders.html', context)
+
+
+
+
+def orderdetails(request, id):
+    order = Order.objects.get(order_number=id)
+    orderproduct = OrderProduct.objects.filter(order__order_number=id).order_by('-created_at')
+    context = {
+        'order' : order,
+        'orderproduct':orderproduct,
+    }
+    return render(request,'master/order_details.html',context)
+
+
+
+
+def update_order_status(request, pk):
+    url = request.META.get('HTTP_REFERER')
+    order_item = Order.objects.get(id=pk)
+        
+    if  order_item.status == 'Ordered':
+        order_item.status = 'shipped'
+    elif order_item.status == 'shipped':
+        order_item.status = 'out_for_delivery'
+    elif order_item.status == 'out_for_delivery':
+        order_item.status = 'delivered'
+        if order_item.status == 'delivered':
+            if order_item.is_paid == False:
+                order_item.is_paid = True
+                order_item.save()
+        
+    order_item.save()
+    return redirect(url)
 
 
     
