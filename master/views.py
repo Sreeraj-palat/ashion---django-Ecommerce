@@ -7,6 +7,7 @@ from django.contrib import messages
 from .forms import productForm, CategoryForm, VariationForm
 from category.models import Category
 from orders.models import Order,OrderProduct,Payment
+from django.core.paginator import EmptyPage, PageNotAnInteger,Paginator
 # Create your views here.
 
 def dashboard(request):
@@ -36,8 +37,11 @@ def blockUser(request, id):
 
 def products(request):
     product = Product.objects.all()
+    paginator = Paginator(product, 10)
+    page = request.GET.get('page')
+    pageed_products = paginator.get_page(page)
     context = {
-        'product' : product
+        'product' : pageed_products
     }
     return render(request, 'master/product_list.html', context)    
 
@@ -141,8 +145,11 @@ def DeleteCategory(request,id):
 
 def VariationList(request):
     variation = Variation.objects.all()
+    paginator = Paginator(variation, 5)
+    page = request.GET.get('page')
+    pageed_products = paginator.get_page(page)
     context = {
-        'variation' : variation,
+        'variation' : pageed_products,
     }
 
     return render(request,'master/variation_list.html', context)
@@ -192,8 +199,11 @@ def DeleteVariation(request,id):
 
 def orders(request):
     order = Order.objects.all()
+    paginator = Paginator(order, 10)
+    page = request.GET.get('page')
+    pageed_products = paginator.get_page(page)
     context = {
-        'order' : order
+        'order' : pageed_products
     }
     return render(request,'master/orders.html', context)
 
