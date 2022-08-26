@@ -63,6 +63,12 @@
                                     <td>{{order.phone}}</td>
                                     <td>{{order.status}}</td>
                                     <td>{{order.created_at}}</td>
+                                    {% if order.status == 'Cancelled' %}
+                                        <td></td>
+                                    {% else %}
+                                    <td><td> <a href="{% url 'cancel_order' order.order_number %}" target=""class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Cancel Order</a> </td></td>
+                                    {% endif %}
+                                    
                                     
                                 </tr>
                                 {% endfor %}

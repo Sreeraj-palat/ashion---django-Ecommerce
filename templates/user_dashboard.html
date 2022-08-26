@@ -87,6 +87,9 @@
                                     {% elif order.status == 'delivered' %}
                                     <span style="float: right;">Order status: <strong
                                             class="text-danger">{{order.status}}</strong></span>
+                                            {% elif order.status == 'Cancelled' %}
+                                    <span style="float: right;">Order status: <strong
+                                            class="text-danger">{{order.status}}</strong></span>
                             {% endif %}
                         </header>
                         <div class="card-body">
@@ -114,11 +117,11 @@
                                         {% endif %}
                                         {% endfor %}
                                     </p>
-                                    {% comment %} {% if order.status == 'New' or order.status == 'Accepted' %}
+                                     {% if order.status != 'Cancelled' %}
                                     <a href="{% url 'cancel_order' order.order_number %}"
                                         onclick="return confirm('Do you want to cancel this order')"><button
                                             class="btn btn-danger">Cancel order</button></a>
-                                    {% endif %} {% endcomment %}
+                                    {% endif %}
                                 </div>
                             </div> <!-- row.// -->
                         </div> <!-- card-body .// -->
