@@ -72,6 +72,8 @@
                                     
                                     {% elif order.status == 'delivered' %}
                                     <td>Product Delivered</td>
+                                    {% elif order.status == 'Cancelled' %}
+                                    <td>Order Cancelled</td>
                                     
                                     {% endif %}
                                     <td>{{order.created_at}}</td>  
