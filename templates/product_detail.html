@@ -171,17 +171,63 @@
                             quis, sem.</p>
                         </div>
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
-                            <h6>Reviews ( 2 )</h6>
-                            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                            consequat massa quis enim.</p>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                            quis, sem.</p>
+                            <br>
+                            <form action="{% url 'submit_review' single_product.id  %}" method="POST" class="mx-2 mb-3 p-3" >
+                                {% csrf_token %}
+                                <h5 class="mb-3 text-center">Write Your Review</h5>
+                                <div class="d-flex align-items-center">
+                                    <!-- Rating Stars -->
+                                    <label for="rating" class="mr-3">Rate this Product : </label>
+                                    <br>
+                                    <div class="rate rating-star">
+                                        <input type="radio" name="rating" id="rating10" value="5" required>
+                                        <label for="rating10" title="5"></label>
+                                        <input type="radio" name="rating" id="rating9" value="4.5" required>
+                                        <label for="rating9" title="4.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating8" value="4" required>
+                                        <label for="rating8" title="4"></label>
+                                        <input type="radio" name="rating" id="rating7" value="3.5" required>
+                                        <label for="rating7" title="3.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating6" value="3" required>
+                                        <label for="rating6" title="3"></label>
+                                        <input type="radio" name="rating" id="rating5" value="2.5" required>
+                                        <label for="rating5" title="2.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating4" value="2" required>
+                                        <label for="rating4" title="2"></label>
+                                        <input type="radio" name="rating" id="rating3" value="1.5" required>
+                                        <label for="rating3" title="1.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating2" value="1" required>
+                                        <label for="rating2" title="1"></label>
+                                        <input type="radio" name="rating" id="rating1" value="0.5" required>
+                                        <label for="rating1" title="0.5" class="half"></label>
+                                    </div>
+                                </div>
+        
+                                <br>
+        
+                                <div>
+                                    Review Title : 
+                                    <input type="text" class="form-control" name="subject">
+        
+                                    <br>
+                                    Review : 
+                                    <textarea name="review" rows="4" class="form-control"></textarea>
+        
+                                    <br>
+        
+                                            <input type="submit" value="Submit" class="btn amado-btn">
+                                       
+                                            <p class="text-danger text-center">You must Purchase this Product to post a review.</p>
+                                       
+                                    
+                                        <p class="text-danger text-center">You must be logged in to post a review <span><a style="color: #fbb710; font-size: 16px; border-bottom: 2px solid" href="{% url 'login' %}">Login</a></span></p>
+                                    
+        
+                                </div>
+                                <div class="mt-3">
+                                   
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -344,5 +390,55 @@
     </div>
 </div>
 <!-- Instagram End -->
+
+
+<style>
+    /* Hiding the radio button */
+    .rate > input {
+        display: none;
+    }
+
+    .rate {
+        display: inline-block;
+        border: 0;
+    }
+
+    .rate > label {
+        float: right;
+    }
+
+    /* Showing Stars */
+    .rate > label::before {
+        display: inline-block;
+        font-size: 1.1rem;
+        font-family: FontAwesome;
+        content: '\f005';
+        margin: 0;
+        padding: 0.3rem 0.2rem;
+        cursor: pointer;
+    }
+
+    /* Half Stars */
+    .rate .half::before {
+        content: '\f089';
+        position: absolute;
+        padding-right: 0;
+
+    }
+
+    /* Click and Hover */
+    input:checked ~ label, label:hover ~ label {
+        color: #ffb503;
+    }
+
+    /* Hover Highlight */
+    input:checked + label:hover, input:checked ~ label:hover, input:checked ~ label:hover ~ label, label:hover ~ input:checked ~ label {
+        color: #cc9000;
+    }
+
+    .rating-star i {
+        color: #ffb503 !important;
+    }
+</style>
 
 {% endblock content %}
