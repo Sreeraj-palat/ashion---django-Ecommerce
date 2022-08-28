@@ -57,14 +57,22 @@
                 <form action="{% url 'add_cart' single_product.id %}" method="POST">
                     {% csrf_token %}
                 <div class="product__details__text">
-                    <h3>{{single_product.product_name}} <span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
+                    <h3>{{single_product.product_name}} <span>{{single_product.category}}</span></h3>
                     <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <span>( 138 reviews )</span>
+                        <div class="my-2 rating-star">
+                            <span>
+                                <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+
+                                <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+
+                                <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+
+                                <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+
+                                <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            </span>
+                            <span class="ml-1" style="color:#777; font-size: 14px;">( {{single_product.countReview}}  Reviews )</span>
+                        </div>
                     </div>
                     <div class="product__details__price">₹ {{single_product.price}} <span>₹ 1500 </span></div>
                     <p>{{single_product.description}}</p>
@@ -214,21 +222,68 @@
                                     <textarea name="review" rows="4" class="form-control"></textarea>
         
                                     <br>
-        
+                                        {% if user.is_authenticated %}
+                                        {% if orderproduct %}
                                             <input type="submit" value="Submit" class="btn amado-btn">
-                                       
-                                            <p class="text-danger text-center">You must Purchase this Product to post a review.</p>
+                                        {% else %}
+                                        <p class="text-danger text-center">You must Purchase this Product to post a review.</p>
+                                        {% endif %}
+                                            {% else %}
+                                           
                                        
                                     
                                         <p class="text-danger text-center">You must be logged in to post a review <span><a style="color: #fbb710; font-size: 16px; border-bottom: 2px solid" href="{% url 'login' %}">Login</a></span></p>
-                                    
+                                        {% endif %}
         
                                 </div>
                                 <div class="mt-3">
                                    
                                 </div>
                             </form>
+
+
+
+                            {% for reviews in reviews %}
+
+                            <article class="p-3 mb-3" style="border: 1px solid #e2e2dd; box-shadow:  0 6px 6px  rgba(0,0,0,0.05);">
+                                <div class="d-flex align-items-center">
+                                    <h6 class="mb-0" style="font-weight: 700; letter-spacing: 1px; color: #000000;">{{ reviews.user.full_name }}</h6>
+                                    <span style="margin-left: auto; color: #777;">{{ reviews.updated_at | date }}</span>
+                                </div>
+                                <div class="mt-3 rating-star">
+                                    <span>
+                                        <i class="fa fa-star{% if reviews.rating == 0.5 %}-half-o{% elif reviews.rating < 1 %}-o {% endif %}" aria-hidden="true"></i>
+        
+                                        <i class="fa fa-star{% if reviews.rating == 1.5 %}-half-o{% elif reviews.rating < 2 %}-o {% endif %}" aria-hidden="true"></i>
+        
+                                        <i class="fa fa-star{% if reviews.rating == 2.5 %}-half-o{% elif reviews.rating < 3 %}-o {% endif %}" aria-hidden="true"></i>
+        
+                                        <i class="fa fa-star{% if reviews.rating == 3.5 %}-half-o{% elif reviews.rating < 4 %}-o {% endif %}" aria-hidden="true"></i>
+        
+                                        <i class="fa fa-star{% if reviews.rating == 4.5 %}-half-o{% elif reviews.rating < 5  %}-o {% endif %}" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                                <div class="mt-3">
+        
+                                    {% if reviews.subject %}
+                                    <h6>{{ reviews.subject }}</h6>
+                                    {% endif %}
+        
+                                    {% if reviews.review %}
+                                    <p>{{ reviews.review }}</p>
+                                    {% endif %}
+                                </div>
+                            </article>
+                             
+                            {% endfor %}
+
+
+
                         </div>
+
+                      
+
+
                     </div>
                 </div>
             </div>
