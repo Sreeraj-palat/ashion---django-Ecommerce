@@ -35,6 +35,7 @@ def place_order(request, total=0, quantity=0):
             print(id)
             address = Delivery_address.objects.get(user=current_user,id=id)
             data = Order()
+            data.user = current_user
             print("address",address)
             data.delivery_address = address
             data.order_note = request.POST.get('ordernote', False)
@@ -97,7 +98,7 @@ def place_order(request, total=0, quantity=0):
             
 
 
-
+@csrf_exempt
 def payment_status(request):
         payment_id = request.POST['razorpay_payment_id']
         order_number = request.session['order_number']
