@@ -2,9 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from carts.models import Cart, CartItem
-
+from orders.models import Delivery_address
 from store.models import Product, Variation
 from django.core.exceptions import ObjectDoesNotExist
+from orders.forms import addressform
+from django.contrib import messages
 
 # Create your views here.
 
@@ -211,10 +213,11 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         grand_total = 0
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+            address = Delivery_address.objects.filter(user=request.user)
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
-  
+
         for cart_item in cart_items:
             total +=(cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
@@ -230,8 +233,55 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         'quantity' : quantity,
         'cart_items' : cart_items,
         'tax' : tax,
-        'grand_total' : grand_total
+        'grand_total' : grand_total,
+        'address': address,
     }
 
     return render (request, 'checkout.html', context)
+
+
+
+
+
+@login_required(login_url='login')
+def save_address(request):
+    if request.method == 'POST':
+            form = addressform(request.POST)
+            User = request.user
+            if form.is_valid:
+                if User.is_authenticated:
+                    user             = User
+                    firstname        = request.POST['firstname']
+                    lastname         = request.POST['lastname']
+                    addressfield_1   = request.POST['addressfield_1']
+                    addressfield_2   = request.POST['addressfield_2']
+                    city             = request.POST['city']
+                    state            = request.POST['state']
+                    country          = request.POST['country']
+                    post_code        = request.POST['post_code']
+                    phonenumber      = request.POST['phonenumber']
+                    email            = request.POST['email']
+                    
+                    address = Delivery_address.objects.create(
+                        user=user,
+                        firstname=firstname,
+                        lastname=lastname,
+                        addressfield_1=addressfield_1,
+                        addressfield_2=addressfield_2,
+                        city=city,
+                        state=state,
+                        country=country,
+                        post_code=post_code,
+                        phonenumber=phonenumber,
+                        email=email,
+                        )
+                    address.save()
+                    messages.success(request, "Address is saved")
+                    return redirect('checkout')
+                else:
+                    return redirect('login')
+            else:
+                messages.info(request, "please enter the reqired information")
+                return redirect('checkout')
+    return redirect('dashboard')
   

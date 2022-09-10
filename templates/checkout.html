@@ -24,7 +24,8 @@
                 here to enter your code.</h6>
             </div> -->
     </div>
-    <form action="{% url 'place_order' %}" class="checkout__form" method="POST">
+
+    <form action="{% url 'save_address' %}" class="checkout__form" method="POST">
       {% csrf_token %}
       <div class="row">
         <div class="col-lg-8">
@@ -33,19 +34,19 @@
             <div class="col-lg-6 col-md-6 col-sm-6">
               <div class="checkout__form__input">
                 <p>First Name <span>*</span></p>
-                <input type="text" name="first_name" required />
+                <input type="text" name="firstname" required />
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
               <div class="checkout__form__input">
                 <p>Last Name <span>*</span></p>
-                <input type="text" name="last_name" required />
+                <input type="text" name="lastname" required />
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
               <div class="checkout__form__input">
                 <p>Phone <span>*</span></p>
-                <input type="text" name="phone" required />
+                <input type="text" name="phonenumber" required />
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -57,11 +58,11 @@
             <div class="col-lg-12">
               <div class="checkout__form__input">
                 <p>Address Line 1 <span>*</span></p>
-                <input type="text" name="address_line_1" required />
+                <input type="text" name='addressfield_1' required />
               </div>
               <div class="checkout__form__input">
                 <p>Address Line 2<span>*</span></p>
-                <input type="text" name="address_line_2" required />
+                <input type="text" name='addressfield_2' required />
               </div>
               <div class="checkout__form__input">
                 <p>City <span>*</span></p>
@@ -78,14 +79,19 @@
                 <input type="text" name="country" required />
               </div>
               <div class="checkout__form__input">
-                <p>Order Note <span>*</span></p>
-                <input type="text" name="order_note" />
-              </div>
+                <p>Postcode/Zip <span>*</span></p>
+                <input type="number" name='post_code'>
+            </div>
+              <button type="submit" name="submit" class="site-btn">Save Address</button>
             </div>
 
             
           </div>
         </div>
+      
+        
+      </form>
+
         <div class="col-lg-4">
           <div class="checkout__order">
             <h5>Your order</h5>
@@ -112,32 +118,43 @@
                 <li>Grand Total <span>₹{{grand_total}}</span></li>
               </ul>
             </div>
+            <form action="{% url 'place_order' %}" method="post">
+              {% csrf_token %}
             <div class="checkout__order__widget">
               <label for="o-acc">
-                Create an acount?
-                <input type="checkbox" id="o-acc" />
-                <span class="checkmark"></span>
+                Delivery Address
+                
               </label>
-              <p>
-                Create am acount by entering the information below. If you are a
-                returing customer login at the top of the page.
-              </p>
-              <label for="check-payment">
-                Cheque payment
-                <input type="checkbox" id="check-payment" />
-                <span class="checkmark"></span>
-              </label>
-              <label for="paypal">
-                PayPal
-                <input type="checkbox" id="paypal" />
-                <span class="checkmark"></span>
-              </label>
+              {% for address in address %}
+                    <div style="display: flex">
+                        <input style="display: inline" type="radio" id="address" name="address" value="{{address.id}}">
+                        <label style="display: inline">
+                            {{address.firstname}},
+                            {{address.lastname}},
+                            {{address.addressfield_1}},
+                            {{address.addressfield_2}},
+                            {{address.city}},
+                            {{address.state}},
+                            {{address.country}},
+                            {{address.post_code}},
+                            {{address.phonenumber}},
+                        </label>
+                        
+                    </div>
+                    {% endfor %}
+                    <div class="checkout__order__widget">
+                        <h4 style="font-weight: 300;">Add a note</h4>
+                        <input type="text" name='ordernote' placeholder="Do you want to add a note?"
+                            class="form-control">
+                    </div>
+             
             </div>
             <button type="submit" name="submit" class="site-btn">Place oder</button>
+          </form>
           </div>
         </div>
       </div>
-    </form>
+    
   </div>
 </section>
 <!-- Checkout Section End -->

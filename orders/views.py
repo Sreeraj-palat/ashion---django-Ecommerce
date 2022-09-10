@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from carts.models import CartItem
-from .forms import OrderForm
-from .models import Order, Payment, OrderProduct
+from .forms import  addressform
+from django.contrib.auth.decorators import login_required
+from .models import Order, Payment, OrderProduct, Delivery_address
 import datetime
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import razorpay
 from carts.models import CartItem
@@ -28,25 +30,21 @@ def place_order(request, total=0, quantity=0):
     grand_total = int(total + tax)*100
 
     if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            # Store all the billing information inside Order table
+            print('dddddddddddd')
+            id = request.POST.get('address')
+            print(id)
+            address = Delivery_address.objects.get(user=current_user,id=id)
             data = Order()
-            data.user = current_user
-            data.first_name = form.cleaned_data['first_name']
-            data.last_name = form.cleaned_data['last_name']
-            data.phone = form.cleaned_data['phone']
-            data.email = form.cleaned_data['email']
-            data.address_line_1 = form.cleaned_data['address_line_1']
-            data.address_line_2 = form.cleaned_data['address_line_2']
-            data.country = form.cleaned_data['country']
-            data.state = form.cleaned_data['state']
-            data.city = form.cleaned_data['city']
-            data.order_note = form.cleaned_data['order_note']
-            data.order_total = grand_total
+            print("address",address)
+            data.delivery_address = address
+            data.order_note = request.POST.get('ordernote', False)
+            data.order_total = grand_total/100
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
+
             data.save()
+
+            print(data.delivery_address)
 
 
             # Generate order number
@@ -93,9 +91,7 @@ def place_order(request, total=0, quantity=0):
                 return render(request, 'payments.html', {'payment':response_payment, 'grand_total': grand_total})
             else:
                 return redirect('checkout')
-        else:
-            return redirect('checkout')   
-
+        
 
 
             
@@ -157,4 +153,11 @@ def payment_status(request):
             return render(request,'payment_status.html',{'status':True})
         except:
             return render(request,'payment_status.html',{'status':False})
+
+
+
+
+
+
+
         
