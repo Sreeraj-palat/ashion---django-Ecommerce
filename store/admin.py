@@ -1,9 +1,10 @@
-from xml.parsers.expat import model
 from django.contrib import admin
 from .models import Product, Variation,ReviewRating
+from image_cropping import ImageCroppingMixin
+
 # Register your models here.
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ImageCroppingMixin,admin.ModelAdmin):
     list_display = ('product_name', 'price', 'stock', 'category', 'modified_date', 'is_available')
     prepopulated_fields = {'slug' : ('product_name',)}
 

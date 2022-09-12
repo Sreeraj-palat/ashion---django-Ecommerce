@@ -43,7 +43,10 @@
                     </div>
                     <div class="product__details__slider__content">
                         <div class="product__details__pic__slider owl-carousel">
-                            <img data-hash="product-1" class="product__big__img" src="{{single_product.images.url}}" alt="">
+                            {% load thumbnail %}
+
+                            <img data-hash="product-1" class="product__big__img" src="{% thumbnail single_product.images 512x512 box=product.cropping crop detail %}
+                            " alt="">
                             <img data-hash="product-2" class="product__big__img" src="{{single_product.image_1.url}}" alt="">
                             <img data-hash="product-3" class="product__big__img" src="{{single_product.image_2.url}}" alt="">
                             <img data-hash="product-4" class="product__big__img" src="{{single_product.image_3.url}}" alt="">

@@ -6,6 +6,8 @@ from django.urls import reverse
 from category.models import Category
 from accounts.models import Account
 from django.db.models import Avg, Count
+from image_cropping import ImageRatioField
+
 # Create your models here.
 
 class Product(models.Model):
@@ -15,6 +17,7 @@ class Product(models.Model):
     price = models.IntegerField()
     stock = models.IntegerField()
     images = models.ImageField(upload_to='photos/products')
+    cropping = ImageRatioField('images', '512x512')
     image_1 = models.ImageField(upload_to='photos/products',blank=True)
     image_2 = models.ImageField(upload_to='photos/products',blank=True)
     image_3 = models.ImageField(upload_to='photos/products',blank=True)
