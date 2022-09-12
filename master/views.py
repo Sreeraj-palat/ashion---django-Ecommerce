@@ -11,7 +11,62 @@ from django.core.paginator import EmptyPage, PageNotAnInteger,Paginator
 # Create your views here.
 
 def dashboard(request):
-    return render(request, 'master/dashboard.html')
+
+    # Total Revenue
+    total_revenue = 0
+    products = OrderProduct.objects.filter(ordered=True)
+    for item in products :
+        total_revenue += item.product_price * item.quantity
+
+
+    # Total Orders
+    order_total = Order.objects.filter(is_ordered=True)
+    total_order_count = order_total.count()
+
+    #user chart
+    verified_user = Account.objects.filter(is_active=True, is_superadmin=False)
+    not_verified_user = Account.objects.filter(is_active=False, is_superadmin=False)
+    total_user = int(verified_user.count()+not_verified_user.count())
+    data1=[verified_user.count(),not_verified_user.count()]
+    data1_label =['Verified','Not Verified']
+
+
+    # Category Chart
+    order_products = OrderProduct.objects.all()
+    women, men, kids, cosmetics, accessories = 0, 0, 0, 0, 0
+    for order_product in order_products :
+        if order_product.product.category.category_name == 'Womens Fashion' :
+            women += order_product.quantity
+        elif order_product.product.category.category_name == 'Mens Fashion' :
+            men += order_product.quantity
+        elif order_product.product.category.category_name == 'Kids Fashion' :
+            kids += order_product.quantity
+        elif order_product.product.category.category_name == 'Cosmetics' :
+            cosmetics += order_product.quantity
+        elif order_product.product.category.category_name == 'Accessories' :
+            accessories += order_product.quantity    
+    total_products = women + men + kids + cosmetics + accessories
+    data4=[women, men, kids, cosmetics, accessories]
+    print(women, men, kids, cosmetics, accessories)
+    data4_label =['Womens Fashion','Mens Fashion', 'Kids Fashion', 'Cosmetics', 'Accessories']
+
+    context = {
+            
+            'total_user':total_user,
+            'data1':data1,
+            'data1_label':data1_label,
+            'data4' : data4,
+            'data4_label':data4_label,
+            'total_products' : total_products,
+            'total_revenue' : total_revenue,
+            'total_order_count' : total_order_count,
+        }
+
+
+    return render(request, 'master/dashboard.html', context)
+
+
+
 
 
 def users(request):
