@@ -77,10 +77,12 @@
                                 </td>
                                 <td class="cart__price">₹ {{cart_items.product.price}}</td>
                                 <td class="cart__quantity">
-                                    <div class="pro-qty">
-                                        <span><a href="{% url 'remove_cart' cart_items.product.id cart_items.id %}">-</a></span>
-                                        <input type="text" value="{{cart_items.quantity}}">
-                                        <span><a href="{% url 'add_cart' cart_items.product.id %}">+</a></span>
+                                    <div class="pro-qt" style="border: none;">
+                                        {% if cart_items.quantity > 1 %}
+                                        <p> <a href="{% url 'remove_cart' cart_items.product.id cart_items.id %}">-</a>&nbsp;&nbsp;&nbsp;
+                                        {% endif %}
+                                        {{cart_items.quantity}}&nbsp;&nbsp;&nbsp;
+                                        <a href="{% url 'add_cart' cart_items.product.id %}">+</a></p>
                                         
                                     </div>
                                 </td>

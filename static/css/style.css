@@ -1749,6 +1749,12 @@ ol {
 	margin-right: 15px;
 }
 
+.pro-qt{
+	border-color: inherit;
+  	-webkit-box-shadow: none;
+  	box-shadow: none;
+}
+
 .pro-qty {
 	height: 50px;
 	width: 150px;
@@ -1770,7 +1776,7 @@ ol {
 
 .pro-qty input {
 	font-size: 14px;
-	color: #666666;
+	color: #ffffff;
 	font-weight: 500;
 	border: none;
 	float: left;
