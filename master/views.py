@@ -296,6 +296,8 @@ def update_order_status(request, pk):
     return redirect(url)
 
 
+
+
 def cancel_order(request,id):
     url = request.META.get('HTTP_REFERER')
     order = Order.objects.get(order_number=id)
