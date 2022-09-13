@@ -118,6 +118,9 @@ def AddProduct(request):
 
 
 
+
+
+
 def EditProduct(request,id):
     product = Product.objects.get(id=id)
     form = productForm(instance=product)
