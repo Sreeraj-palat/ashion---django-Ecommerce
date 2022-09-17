@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'customer',
     'easy_thumbnails',
     'image_cropping',
+    'coupons',
 ]
 
 from easy_thumbnails.conf import Settings as thumbnail_settings

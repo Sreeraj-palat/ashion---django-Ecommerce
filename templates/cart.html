@@ -4,6 +4,10 @@
 {% block content %}
     
 
+<style>
+    a { color: inherit; } 
+</style>
+
  <!-- Breadcrumb Begin -->
  <div class="breadcrumb-option">
     <div class="container">
@@ -79,10 +83,10 @@
                                 <td class="cart__quantity">
                                     <div class="pro-qt" style="border: none;">
                                         {% if cart_items.quantity > 1 %}
-                                        <p> <a href="{% url 'remove_cart' cart_items.product.id cart_items.id %}">-</a>&nbsp;&nbsp;&nbsp;
+                                        <p> <a class="fa fa-minus" href="{% url 'remove_cart' cart_items.product.id cart_items.id %}"></a>&nbsp;&nbsp;&nbsp;
                                         {% endif %}
                                         {{cart_items.quantity}}&nbsp;&nbsp;&nbsp;
-                                        <a href="{% url 'add_cart' cart_items.product.id %}">+</a></p>
+                                        <a class="fa fa-plus" href="{% url 'add_cart' cart_items.product.id %}"></a></p>
                                         
                                     </div>
                                 </td>
@@ -98,6 +102,10 @@
                         </tbody>
                     </table>
                 </div>
+
+                
+
+
             </div>
         </div>
         <div class="row">
@@ -121,6 +129,7 @@
                         <button type="submit" class="site-btn">Apply</button>
                     </form>
                 </div>
+                
             </div>
             <div class="col-lg-4 offset-lg-2">
                 <div class="cart__total__procced">
