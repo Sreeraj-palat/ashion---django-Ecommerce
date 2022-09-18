@@ -124,8 +124,9 @@
             <div class="col-lg-6">
                 <div class="discount__content">
                     <h6>Discount codes</h6>
-                    <form action="#">
-                        <input type="text" placeholder="Enter your coupon code">
+                    <form action="{% url 'apply_coupon' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" placeholder="Enter your coupon code" name="code">
                         <button type="submit" class="site-btn">Apply</button>
                     </form>
                 </div>
@@ -138,6 +139,12 @@
                         <li>Subtotal <span>${{total}}</span></li>
                         <li>Tax <span>${{tax}}</span></li>
                         <li>Grand Total <span>${{grand_total}}</span></li>
+                        {% if applyed_coupen %}
+                        <li>Applide Coupon <span>{{applyed_coupen}}</span></li>
+                        <li>Discount Price <span>{{discount_price}}</span></li>
+                            
+                        {% endif %}
+                        
                     </ul>
                     <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a><br>
                     

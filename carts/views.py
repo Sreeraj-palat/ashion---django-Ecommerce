@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from carts.models import Cart, CartItem
+from coupons.models import Coupons
 from orders.models import Delivery_address
 from store.models import Product, Variation
 from django.core.exceptions import ObjectDoesNotExist
@@ -176,8 +177,19 @@ def remove_cart_item(request, product_id, cart_item_id):
 
 def cart(request, total=0, quantity=0, cart_items=None):
     try:
+        applyed_coupen = None
+        coupon  = request.session['code']
+        print(coupon)
+        applyed_coupen = Coupons.objects.filter(code=coupon).first()
+        print(applyed_coupen)
+
+    except :
+        pass    
+    
+    try:
         tax = 0
         grand_total = 0
+        discount_price = 0
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
         else:
@@ -189,7 +201,8 @@ def cart(request, total=0, quantity=0, cart_items=None):
             quantity += cart_item.quantity
 
         tax = (2 * total)/100
-        grand_total = total + tax    
+        grand_total = total + tax 
+        discount_price = (grand_total - (applyed_coupen.discount * grand_total)/100   )
 
     except ObjectDoesNotExist:
         pass
@@ -199,7 +212,9 @@ def cart(request, total=0, quantity=0, cart_items=None):
         'quantity' : quantity,
         'cart_items' : cart_items,
         'tax' : tax,
-        'grand_total' : grand_total
+        'grand_total' : grand_total,
+        'applyed_coupen' : applyed_coupen,
+        'discount_price':discount_price,
     }
 
     return render (request, 'cart.html', context)
