@@ -1,7 +1,9 @@
+from dataclasses import fields
 from pyexpat import model
 from django import forms
 from store.models import Product, Variation
 from category.models import Category
+from coupons.models import Coupons
 
 
 
@@ -44,3 +46,16 @@ class VariationForm(forms.ModelForm):
         super(VariationForm,self).__init__(*args,**kwargs)        
         for field in self.fields:
             self.fields[field].widget.attrs['class'] =  'form-control'    
+
+
+
+class AddCouponForm(forms.ModelForm):
+    class Meta:
+        model = Coupons
+        fields = '__all__'
+
+
+    def __init__(self, *args, **kwargs):
+        super(AddCouponForm,self).__init__(*args,**kwargs)        
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] =  'form-control'     

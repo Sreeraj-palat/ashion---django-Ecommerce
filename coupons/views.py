@@ -21,4 +21,3 @@ def apply_coupon(request):
         else:
             messages.info(request, "Coupon is invalid")
             return redirect('cart')    
-

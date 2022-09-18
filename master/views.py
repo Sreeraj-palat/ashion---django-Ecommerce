@@ -2,9 +2,10 @@ import imp
 from unicodedata import category
 from django.shortcuts import render, redirect
 from accounts.models import Account
+from coupons.models import Coupons
 from store.models import Product, Variation
 from django.contrib import messages
-from .forms import productForm, CategoryForm, VariationForm
+from .forms import productForm, CategoryForm, VariationForm, AddCouponForm
 from category.models import Category
 from orders.models import Order,OrderProduct,Payment
 from django.core.paginator import EmptyPage, PageNotAnInteger,Paginator
@@ -311,6 +312,58 @@ def cancel_order(request,id):
         order.save()
     return redirect(url)
 
+
+
+
+
+def coupon_list(request):
+    coupons = Coupons.objects.all()
+    context = {
+        'coupons':coupons
+    }
+    return render (request,'master/coupon_list.html', context)
+
+
+
+
+def add_coupon(request):
+    form = AddCouponForm()
+    if request.method == 'POST':
+        form = AddCouponForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect ('coupon_list')
+        else:
+            messages.warning(request, 'enter correct details')
+
+    context = {
+        'form' : form,
+    }               
+    return render(request, 'master/add_coupon.html', context)    
+
+
+
+def edit_coupon(request,id):
+    coupon = Coupons.objects.get(id=id)
+    form = AddCouponForm(instance = coupon)
+    if request.method == 'POST':
+        form = AddCouponForm(request.POST, request.FILES, instance = coupon)
+        if form.is_valid():
+            form.save()
+        return redirect('coupon_list')
+    context = {
+        'form' : form,
+        'coupon' : coupon,
+    }        
+    return render(request, 'master/edit_coupon.html', context)
+
+
+
+def delete_coupon(request,id):
+    coupon = Coupons.objects.filter(id=id)
+    coupon.delete()
+    return redirect('coupon_list')    
+    
     
 
 

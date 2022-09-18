@@ -1,0 +1,86 @@
+{% extends 'master/master_main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title"></h4>
+            </div>
+            
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <div class="d-md-flex">
+                    <ol class="breadcrumb ms-auto">
+                        <li><a href="#" class="fw-normal"></a></li>
+                    </ol>
+                   
+                    <a href="{% url 'add_coupon' %}" target=""
+                        class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Add Coupon</a>
+                </div>
+            </div>
+        </div> 
+        
+    </div>
+   
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h3 class="box-title">Coupon List</h3>
+                    
+                    <div class="table-responsive">
+                        <table class="table text-nowrap">
+                            <thead>
+                                <tr>
+                                    
+                                    <th class="border-top-0">Coupon Code</th>
+                                    <th class="border-top-0">Discount Percent</th>
+                                    
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for coupons in coupons %}
+                                
+                              
+                               
+                                <tr>
+                                    
+                                    <td>{{coupons.code}}</td>
+                                    <td>{{coupons.discount}}</td>
+                                   
+                                    <td> <a href="{% url 'edit_coupon' coupons.id  %}" target=""class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Edit</a> </td>
+                                    <td> <a href="{% url 'delete_coupon' coupons.id %}" target=""class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Delete</a> </td>
+                                    
+                                </tr>
+                                {% endfor %}
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+    
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+    
+{% endblock content %}
