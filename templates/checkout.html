@@ -116,6 +116,11 @@
                 <li>Subtotal <span>₹{{total}}</span></li>
                 <li>Tax <span>₹{{tax}}</span></li>
                 <li>Grand Total <span>₹{{grand_total}}</span></li>
+                {% if applyed_coupen %}
+                <li>Applide Coupon <span>{{applyed_coupen}}</span></li>
+                <li>Discount Price <span>{{discount_price}}</span></li>
+                    
+                {% endif %}
               </ul>
             </div>
             <form action="{% url 'place_order' %}" method="post">

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from carts.models import CartItem
+from coupons.models import Coupons
 from .forms import  addressform
 from django.contrib.auth.decorators import login_required
 from .models import Order, Payment, OrderProduct, Delivery_address
@@ -13,6 +14,16 @@ from store.models import Product
 # Create your views here.
 @csrf_exempt
 def place_order(request, total=0, quantity=0):
+    try:
+        applyed_coupen = None
+        coupon  = request.session['code']
+        print(coupon)
+        applyed_coupen = Coupons.objects.filter(code=coupon).first()
+        print(applyed_coupen)
+    except :
+        pass      
+
+        
     current_user = request.user
 
     # If the cart count is less than or equal to 0, then redirect back to shop
@@ -28,6 +39,8 @@ def place_order(request, total=0, quantity=0):
         quantity += cart_item.quantity
     tax = (2 * total)/100
     grand_total = int(total + tax)*100
+    discount_price = (grand_total - (applyed_coupen.discount * grand_total)/100   )
+ 
 
     if request.method == 'POST':
             print('dddddddddddd')
@@ -65,7 +78,7 @@ def place_order(request, total=0, quantity=0):
 
             # generate order
             DATA = {
-                "amount": grand_total,
+                "amount": discount_price,
                 "currency": "INR",
                 "receipt": order_number,
                 "payment_capture": 1
@@ -89,7 +102,7 @@ def place_order(request, total=0, quantity=0):
                     'payment':   response_payment,
                     'grand_total':   grand_total,
                     }
-                return render(request, 'payments.html', {'payment':response_payment, 'grand_total': grand_total})
+                return render(request, 'payments.html', {'payment':response_payment, 'grand_total': discount_price})
             else:
                 return redirect('checkout')
         

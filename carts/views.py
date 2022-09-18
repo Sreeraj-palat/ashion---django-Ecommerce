@@ -224,6 +224,15 @@ def cart(request, total=0, quantity=0, cart_items=None):
 @login_required(login_url='login')
 def checkout(request, total=0, quantity=0, cart_items=None):
     try:
+        applyed_coupen = None
+        coupon  = request.session['code']
+        print(coupon)
+        applyed_coupen = Coupons.objects.filter(code=coupon).first()
+        print(applyed_coupen)
+
+    except :
+        pass   
+    try:
         tax = 0
         grand_total = 0
         if request.user.is_authenticated:
@@ -238,7 +247,9 @@ def checkout(request, total=0, quantity=0, cart_items=None):
             quantity += cart_item.quantity
 
         tax = (2 * total)/100
-        grand_total = total + tax    
+        grand_total = total + tax  
+        discount_price = (grand_total - (applyed_coupen.discount * grand_total)/100   )
+  
 
     except ObjectDoesNotExist:
         pass
@@ -250,6 +261,8 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         'tax' : tax,
         'grand_total' : grand_total,
         'address': address,
+        'applyed_coupen':applyed_coupen,
+        'discount_price':discount_price,
     }
 
     return render (request, 'checkout.html', context)
