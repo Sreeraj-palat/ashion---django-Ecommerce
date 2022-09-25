@@ -202,7 +202,8 @@ def cart(request, total=0, quantity=0, cart_items=None):
 
         tax = (2 * total)/100
         grand_total = total + tax 
-        discount_price = (grand_total - (applyed_coupen.discount * grand_total)/100   )
+        if applyed_coupen:
+            discount_price = (grand_total - (applyed_coupen.discount * grand_total)/100   )
 
     except ObjectDoesNotExist:
         pass
