@@ -1,0 +1,87 @@
+{% extends 'master/master_main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb bg-white">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title"></h4>
+            </div>
+            
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                <div class="d-md-flex">
+                    <ol class="breadcrumb ms-auto">
+                        <li><a href="#" class="fw-normal"></a></li>
+                    </ol>
+                   
+                    
+                </div>
+            </div>
+        </div> 
+        
+    </div>
+   
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h3 class="box-title">Sales Report</h3>
+                    
+                    <div class="table-responsive">
+                        <table class="table text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">sl.no</th>
+                                    <th class="border-top-0">order Number</th>
+                                    <th class="border-top-0">Date</th>
+                                    <th class="border-top-0">Quantity</th>
+                                    <th class="border-top-0">Status</th>
+                                    <th class="border-top-0">Price</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                
+                              
+                               
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{order.order}}</td>
+                                    <td>{{order.created_at}}</td>
+                                    <td>{{order.quantity}}</td>
+                                    <td>{{order.order.status}}</td>
+                                    <td>{{order.product_price}}</td>
+                                   
+                                </tr>
+                                {% endfor %}
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+    
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+    
+{% endblock content %}

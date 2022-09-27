@@ -364,6 +364,18 @@ def delete_coupon(request,id):
     coupon.delete()
     return redirect('coupon_list')    
     
+
+
+def sales_report(request):
+    if request.method == 'POST':
+          date_from=request.POST['datefrom']
+          date_to=request.POST['dateto']
+          order_search=OrderProduct.objects.filter(created_at__range=[date_from,date_to])
+          return render(request,'master/sales_report.html',{'orders':order_search})
+    else:
+        users = Account.objects.all()
+        orders = OrderProduct.objects.all()
+        return render(request, "master/sales_report.html",{'orders':orders,'users':users})
     
 
 
