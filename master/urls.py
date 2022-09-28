@@ -3,6 +3,10 @@ from . import views
 
 urlpatterns = [
     path('',views.dashboard, name='admindashboard'),
+
+    path('master-login/',views.master_login, name='master-login'),
+    path('master_logout/',views.master_logout, name='master_logout'),
+    
     path('user_list/',views.users, name='users'),
     path('block-user/<int:id>/',views.blockUser,name='block-user'),
 

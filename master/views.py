@@ -4,15 +4,50 @@ from django.shortcuts import render, redirect
 from accounts.models import Account
 from coupons.models import Coupons
 from store.models import Product, Variation
-from django.contrib import messages
+from django.contrib import messages, auth
 from .forms import productForm, CategoryForm, VariationForm, AddCouponForm
 from category.models import Category
 from orders.models import Order,OrderProduct,Payment
 from django.core.paginator import EmptyPage, PageNotAnInteger,Paginator
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
-def dashboard(request):
 
+
+#Admin Login
+def master_login(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = auth.authenticate(email = email , password = password,is_superadmin=True)
+        if user is not None:
+            if user.is_superadmin:
+                auth.login(request,user)
+                request.session['admin']=email
+                messages.success(request, "You are logged in")
+                return redirect('admindashboard')
+            else:
+                messages.error(request, 'you are not a Master')
+                return redirect('master-login')
+        else:
+            messages.error(request, 'invalid login credentials')
+            return redirect('master-login')
+    return render(request, 'master/login.html')
+
+
+
+#Admin logout
+@login_required(login_url = 'master-login')
+def master_logout(request):
+    auth.logout(request)
+    messages.success(request, 'You are logged out.')
+    return redirect('master-login')
+
+
+
+@login_required(login_url = 'master-login')
+def dashboard(request):
     # Total Revenue
     total_revenue = 0
     products = OrderProduct.objects.filter(ordered=True)
@@ -69,15 +104,17 @@ def dashboard(request):
 
 
 
-
+@login_required(login_url = 'master-login')
 def users(request):
     user = Account.objects.all()
     context = {
         'user' : user,
     }
-    return render(request, 'master/user_list.html', context)    
+    return render(request, 'master/user_list.html', context)  
 
 
+
+@login_required(login_url = 'master-login')
 def blockUser(request, id):
     user = Account.objects.get(id=id)
     if user.is_active:
@@ -91,6 +128,9 @@ def blockUser(request, id):
     return redirect('users')      
 
 
+
+
+@login_required(login_url = 'master-login')
 def products(request):
     product = Product.objects.all()
     paginator = Paginator(product, 10)
@@ -102,6 +142,8 @@ def products(request):
     return render(request, 'master/product_list.html', context)    
 
 
+
+@login_required(login_url = 'master-login')
 def AddProduct(request):
     form = productForm()
     if request.method == 'POST':
@@ -121,7 +163,7 @@ def AddProduct(request):
 
 
 
-
+@login_required(login_url = 'master-login')
 def EditProduct(request,id):
     product = Product.objects.get(id=id)
     form = productForm(instance=product)
@@ -138,6 +180,9 @@ def EditProduct(request,id):
     return render(request, 'master/edit_product.html', context)
 
 
+
+
+@login_required(login_url = 'master-login')
 def DeleteProduct(request,id):
     product = Product.objects.filter(id=id)
     product.delete()
@@ -145,6 +190,9 @@ def DeleteProduct(request,id):
 
 
 
+
+
+@login_required(login_url = 'master-login')
 def CategoryList(request):
     category = Category.objects.all()
     context = {
@@ -155,6 +203,8 @@ def CategoryList(request):
 
 
 
+
+@login_required(login_url = 'master-login')
 def AddCategory(request):
     form = CategoryForm()
     if request.method == 'POST':
@@ -175,6 +225,8 @@ def AddCategory(request):
 
 
 
+
+@login_required(login_url = 'master-login')
 def EditCategory(request,id):
     category = Category.objects.get(id=id)
     form = CategoryForm(instance=category)
@@ -193,6 +245,7 @@ def EditCategory(request,id):
 
 
 
+@login_required(login_url = 'master-login')
 def DeleteCategory(request,id):
     category = Category.objects.filter(id=id)
     category.delete()
@@ -202,6 +255,7 @@ def DeleteCategory(request,id):
 
 
 
+@login_required(login_url = 'master-login')
 def VariationList(request):
     variation = Variation.objects.all()
     paginator = Paginator(variation, 5)
@@ -216,6 +270,8 @@ def VariationList(request):
 
 
 
+
+@login_required(login_url = 'master-login')
 def AddVariation(request):
     form = VariationForm()
     if request.method == 'POST':
@@ -233,6 +289,9 @@ def AddVariation(request):
     return render(request,'master/add_variation.html', context)  
 
 
+
+
+@login_required(login_url = 'master-login')
 def EditVariation(request,id):
     variation = Variation.objects.get(id=id)
     form = VariationForm(instance=variation)
@@ -250,12 +309,18 @@ def EditVariation(request,id):
     
 
 
+
+
+@login_required(login_url = 'master-login')
 def DeleteVariation(request,id):
     variation = Variation.objects.filter(id=id)
     variation.delete()
     return redirect('variation_list')    
 
 
+
+
+@login_required(login_url = 'master-login')
 def orders(request):
     order = Order.objects.all()
     paginator = Paginator(order, 10)
@@ -269,6 +334,8 @@ def orders(request):
 
 
 
+
+@login_required(login_url = 'master-login')
 def orderdetails(request, id):
     order = Order.objects.get(order_number=id)
     orderproduct = OrderProduct.objects.filter(order__order_number=id).order_by('-created_at')
@@ -281,6 +348,8 @@ def orderdetails(request, id):
 
 
 
+
+@login_required(login_url = 'master-login')
 def update_order_status(request, pk):
     url = request.META.get('HTTP_REFERER')
     order_item = Order.objects.get(id=pk)
@@ -302,6 +371,8 @@ def update_order_status(request, pk):
 
 
 
+
+@login_required(login_url = 'master-login')
 def cancel_order(request,id):
     url = request.META.get('HTTP_REFERER')
     order = Order.objects.get(order_number=id)
@@ -315,7 +386,7 @@ def cancel_order(request,id):
 
 
 
-
+@login_required(login_url = 'master-login')
 def coupon_list(request):
     coupons = Coupons.objects.all()
     context = {
@@ -325,7 +396,7 @@ def coupon_list(request):
 
 
 
-
+@login_required(login_url = 'master-login')
 def add_coupon(request):
     form = AddCouponForm()
     if request.method == 'POST':
@@ -342,7 +413,7 @@ def add_coupon(request):
     return render(request, 'master/add_coupon.html', context)    
 
 
-
+@login_required(login_url = 'master-login')
 def edit_coupon(request,id):
     coupon = Coupons.objects.get(id=id)
     form = AddCouponForm(instance = coupon)
@@ -358,14 +429,14 @@ def edit_coupon(request,id):
     return render(request, 'master/edit_coupon.html', context)
 
 
-
+@login_required(login_url = 'master-login')
 def delete_coupon(request,id):
     coupon = Coupons.objects.filter(id=id)
     coupon.delete()
     return redirect('coupon_list')    
     
 
-
+@login_required(login_url = 'master-login')
 def sales_report(request):
     if request.method == 'POST':
           date_from=request.POST['datefrom']
